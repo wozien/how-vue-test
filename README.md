@@ -167,3 +167,28 @@ test('renders an Item with data for each item in window.items', () => {
   })
 })
 ```
+
+### 测试样式
+
+```xml
+<!-- ProgressBar.vue -->
+<template>
+  <div class="hidden" :style="{width: '0%'}"></div>
+</template>
+```
+
+```js
+// ProgressBar.spec.js
+describe('ProgressBar.vue', () => {
+  test('is hidden on initial render', () => {
+    const wrapper = shallowMount(ProgressBar)
+    expect(wrapper.classes()).toContain('hidden')
+  })
+
+  test('initial width with 0%', () => {
+    const wrapper = shallowMount(ProgressBar)
+    // element 表示包装器对应的dom元素
+    expect(wrapper.element.style.width).toBe('0%')
+  })
+})
+```

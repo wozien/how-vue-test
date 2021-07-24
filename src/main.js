@@ -8,6 +8,7 @@ fetchListData('top')
   .then(items => {
     window.items = items
     new Vue({
+      el: '#app',
       render: h => h(App),
     })
   })
