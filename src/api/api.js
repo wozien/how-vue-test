@@ -1,6 +1,7 @@
 import Firebase from 'firebase/app'
 import 'firebase/database'
 
+// 
 Firebase.initializeApp({
   databaseURL: 'https://hacker-news.firebaseio.com'
 })
