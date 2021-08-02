@@ -2,7 +2,9 @@ import { shallowMount } from '@vue/test-utils'
 import ProgressBar from '../ProgressBar.vue'
 
 describe('ProgressBar.vue', () => {
-  jest.useFakeTimers()
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
 
   test('initial width with 0%', () => {
     const wrapper = shallowMount(ProgressBar)
@@ -42,10 +44,10 @@ describe('ProgressBar.vue', () => {
   })
 
   test('clear timer when finish is called', () => {
-    jest.spyOn(window, 'clearInterval')
+    const spy = jest.spyOn(window, 'clearInterval')
     const wrapper = shallowMount(ProgressBar)
     wrapper.vm.start()
     wrapper.vm.finish()
-    expect(window.clearInterval).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalled()
   })
 })
