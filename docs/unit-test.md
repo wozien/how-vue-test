@@ -235,9 +235,37 @@ test('call $bar start on load', () => {
 
 ### Jest Mock 函数
 
-通过 `fn.mock()` 创建一个模拟函数，从而可以断言方法是否被调用, [更多api文档](https://jestjs.io/docs/mock-function-api)
+通过 `jest.fn` 创建一个模拟函数，从而可以断言方法是否被调用, [更多api文档](https://jestjs.io/docs/mock-function-api)
 
 ```js
+test('call $bar finish when load is successful', async () => {
+  const $bar = {
+    start: () => {},
+    finish: jest.fn()
+  }
+  shallowMount(ItemList, { mocks: { $bar }})
+  await flushPromises()
+
+  expect($bar.finish).toHaveBeenCalled()
+})
+```
+
+### 模拟方法副作用
+
+常用于模拟包含 http 请求方法，一般还是用 `jest.fn` 去拦截原来的请求数据方法，可以在api目录创建对应的mock文件 **(放在同级的__mocks__下，文件名必须一致)**
+
+```js
+// __mocks__/api.js
+export const fetchListData = jest.fn(() => Promise.resolve([]))
+
+```
+
+```js
+// ItemList.spec.js
+
+jest.mock('../../api/api.js')
+
+// ..
 test('renders an Item with data for each item', async () => {
   expect.assertions(4)
   const $bar = {
@@ -257,22 +285,61 @@ test('renders an Item with data for each item', async () => {
 })
 ```
 
-### 模拟方法副作用
+## 测试事件
 
-常用于模拟包含 http 请求方法，一般还是用 `fn.mock` 去拦截原来的请求数据方法，可以在api目录创建对应的mock文件 **(放在同级的__mocks__下，文件名必须一致)**
+### 测试原生事件
+
+使用包装器上的 `trigger` 出发DOM元素事件
+
+`Modal.vue`
+
+```xml
+<template>
+  <div>
+    <button @click="onClose"></button>
+    <slot></slot>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['onClose']
+}
+</script>
+```
 
 ```js
-jest.mock('../../api/api.js')
+test('call onClose when button is clicked', () => {
+  const onClose = jest.fn()
+  const wrapper = shallowMount(Modal, {
+    propsData: {
+      onClose
+    }
+  })
+  wrapper.find('button').trigger('click')
+  expect(onClose).toHaveBeenCalled()
+})
+```
 
-// ..
-test('call $bar finish when load is successful', async () => {
-  const $bar = {
-    start: () => {},
-    finish: jest.fn()
-  }
-  shallowMount(ItemList, { mocks: { $bar }})
-  await flushPromises()
+### 测试vue事件
 
-  expect($bar.finish).toHaveBeenCalled()
+测试子组件，通过`trigger`触发事件， 通过包装器方法`emitted`判断事件是否触发
+
+```js
+test('emit close-modal when button is clicked', () => {
+  const wrapper = shallowMount(Modal)
+  wrapper.find('button').trigger('click')
+  expect(wrapper.emitted('close-modal')).toHaveLength(1)
+})
+```
+
+在父组件中， 通过 `vm.$emit` 触发子组件事件，从而进行断言, [组件代码](../src/views/Login.vue)
+
+```js
+test('hide Modal when Modal emit close-modal', async () => {
+  const wrapper = shallowMount(Login)
+  wrapper.findComponent(Modal).vm.$emit('close-modal')
+  await wrapper.vm.$nextTick()
+  expect(wrapper.findComponent(Modal).exists()).toBeFalsy()
 })
 ```

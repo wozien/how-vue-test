@@ -25,6 +25,7 @@ yarn add jest vue-jest babel-jest babel-core@bridge @vue/test-utils -D
 ```json
 "env": {
   "jest": true  
+}
 ```
 
 ## [单元测试](./docs/unit-test.md)
