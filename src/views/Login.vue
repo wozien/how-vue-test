@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal
-      v-if="status"
+      v-if="status" 
       @close-modal="onClose"
     ></Modal>
   </div>

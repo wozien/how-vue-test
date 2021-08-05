@@ -343,3 +343,26 @@ test('hide Modal when Modal emit close-modal', async () => {
   expect(wrapper.findComponent(Modal).exists()).toBeFalsy()
 })
 ```
+
+### 测试表单输入
+
+可以使用 `wrapper.setValue` 来设置文本框的值，并且改方法也会更新 `v-model` 绑定的状态
+
+组件代码： [Form.vue](../src/components/Form.vue)
+
+```js
+test('send post request with email on submit', () => {
+  const wrapper = shallowMount(Form)
+  const input = wrapper.find('input[type="email"]')
+  input.setValue('email@gmail.com') // v-model update
+  wrapper.find('button').trigger('submit')
+  
+  const url ='http://demo7437963.mockable.io/validate'
+  const expectData = expect.objectContaining({
+    email: 'email@gmail.com'
+  })
+  expect(axios.post).toHaveBeenCalledWith(url, expectData)
+})
+```
+
+向单选框和复选框必须要用 `setChecked` 来设置值

@@ -11,6 +11,7 @@
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "firebase": "^8.7.1",
     "flush-promises": "^1.0.2",

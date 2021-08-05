@@ -28,4 +28,12 @@ yarn add jest vue-jest babel-jest babel-core@bridge @vue/test-utils -D
 }
 ```
 
-## [单元测试](./docs/unit-test.md)
+## 测试方法
+
+- [单元测试](./docs/unit-test.md)
+
+- [快照测试](./docs/snapshoot.md)
+
+- [端到端测试](./docs/e2e.md)
+
+- [Vuex 测试](./docs/vuex.md)
