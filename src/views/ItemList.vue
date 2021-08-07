@@ -2,7 +2,7 @@
   <div class="item-list-view">
     <div class="item-list">
       <item
-        v-for="item in items"
+        v-for="item in displayItems"
         :key="item.id"
         :item="item"
       />
@@ -11,19 +11,18 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Item from '../components/Item.vue'
-import { fetchListData } from '../api/api'
 
 export default {
   components: {
     Item
   },
-  data() {
-    return {
-      items: []
-    }
-  },
 
+  computed: {
+    ...mapGetters(['displayItems'])
+  },
+  
   beforeMount() {
     this.loadItems()
   },
@@ -31,13 +30,16 @@ export default {
   methods: {
     loadItems() {
       this.$bar.start()
-      fetchListData('top').then(items => {
-        this.items = items
+      this.fetchListData({ type: 'top' })
+      .then(() => {
         this.$bar.finish()
-      }).catch(() => {
+      })
+      .catch(() => {
         this.$bar.fail()
       })
-    }
+    },
+
+    ...mapActions(['fetchListData'])
   }
 }
 </script>

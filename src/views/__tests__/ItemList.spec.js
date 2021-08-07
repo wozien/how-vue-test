@@ -1,23 +1,62 @@
-import { shallowMount } from '@vue/test-utils'
+import Vuex from 'vuex'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import ItemList from '../ItemList.vue'
 import flushPromises from 'flush-promises'
-import { fetchListData } from '../../api/api'
+// import { fetchListData } from '../../api/api'
 import Item from '../../components/Item.vue'
 
-jest.mock('../../api/api.js')
+// jest.mock('../../api/api.js')
+
+const localVue = createLocalVue()
+localVue.use(Vuex)
 
 describe('ItemList.vue', () => {
-  test('renders an Item with data for each item', async () => {
+  let storeConfig
+  let store
+
+  beforeEach(() => {
+    storeConfig = {
+      getters: {
+        displayItems: jest.fn()
+      },
+      actions: {
+        fetchListData: jest.fn(() => Promise.resolve([]))
+      }
+    }
+    store = new Vuex.Store(storeConfig)
+  })
+
+  // test('renders an Item with data for each item', async () => {
+  //   expect.assertions(4)
+  //   const $bar = {
+  //     start: () => {},
+  //     finish: () => {}
+  //   }
+  //   const items = [{id:1}, {id:2}, {id:3}]
+  //   fetchListData.mockResolvedValueOnce(items)
+
+  //   const wrapper = shallowMount(ItemList, { mocks: { $bar }})
+  //   await flushPromises()
+  //   const Items = wrapper.findAllComponents(Item)
+  //   expect(Items).toHaveLength(items.length)
+  //   Items.wrappers.forEach((wrapper, i) => {
+  //     expect(wrapper.props().item).toBe(items[i])
+  //   })
+  // })
+
+  test('renders Item with data in store.getters.displayItem', () => {
     expect.assertions(4)
     const $bar = {
       start: () => {},
       finish: () => {}
     }
     const items = [{id:1}, {id:2}, {id:3}]
-    fetchListData.mockResolvedValueOnce(items)
-
-    const wrapper = shallowMount(ItemList, { mocks: { $bar }})
-    await flushPromises()
+    storeConfig.getters.displayItems.mockReturnValue(items)
+    const wrapper = shallowMount(ItemList, {
+      mocks: { $bar },
+      localVue,
+      store
+    })
     const Items = wrapper.findAllComponents(Item)
     expect(Items).toHaveLength(items.length)
     Items.wrappers.forEach((wrapper, i) => {
@@ -31,9 +70,9 @@ describe('ItemList.vue', () => {
       finish: () => {}
     }
     shallowMount(ItemList, {
-      mocks: {
-        $bar
-      }
+      mocks: { $bar },
+      localVue,
+      store
     })
     expect($bar.start).toHaveBeenCalled()
   })
@@ -43,9 +82,12 @@ describe('ItemList.vue', () => {
       start: () => {},
       finish: jest.fn()
     }
-    shallowMount(ItemList, { mocks: { $bar }})
+    shallowMount(ItemList, {
+      mocks: { $bar },
+      localVue,
+      store
+    })
     await flushPromises()
-
     expect($bar.finish).toHaveBeenCalled()
   })
 
@@ -54,8 +96,12 @@ describe('ItemList.vue', () => {
       start: () => {},
       fail: jest.fn()
     }
-    fetchListData.mockRejectedValueOnce()
-    shallowMount(ItemList, { mocks: { $bar }})
+    storeConfig.actions.fetchListData.mockRejectedValueOnce()
+    shallowMount(ItemList, {
+      mocks: { $bar },
+      localVue,
+      store
+    })
     await flushPromises()
 
     expect($bar.fail).toHaveBeenCalled()
