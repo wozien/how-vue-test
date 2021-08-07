@@ -1,4 +1,4 @@
-测试 `vuex` 可以有两种方法， 一种是颗粒度较小的单独测试 `actions`, `mutations`, `getters`, 这种方法好处是更加具体， 并且可以快速定位`store`哪一部分出问题，但是会花费较多的时间精力。另外一种是测试一个`store` 实例子，这种方式会更加简便，但是测试失败无法快速定位是 `store` 那一部分出错。
+测试 `vuex` 可以有两种方法， 一种是颗粒度较小的单独测试 `actions`, `mutations`, `getters`, 这种方法好处是更加具体，但是会花费较多的时间精力。另外一种是测试一个`store` 实例子，这种方式会更加简便，但是测试失败无法快速定位是 `store` 那一部分出错。
 
 ## 独立测试
 
@@ -7,7 +7,7 @@
 主要调用 `mutations` 函数并且断言结果即可
 
 ```js
-// getters.js
+// mutations.js
 export default {
   setItems(state, { items }) {
     state.items = items
@@ -16,7 +16,7 @@ export default {
 ```
 
 ```js
-// getter.spec.js
+// mutations.spec.js
 test('setItems set state.items to items', () => {
   const state = {
     items: []
@@ -29,10 +29,10 @@ test('setItems set state.items to items', () => {
 
 ### 测试 Getters
 
-和 mutations 测试类型
+和 `mutations` 测试方法相同
 
 ```js
-// mutations.js
+// getters.js
 export default {
   displayItems(state) {
     return state.items.slice(0, 20)
@@ -41,7 +41,7 @@ export default {
 ```
 
 ```js
-// mutations.spec.js
+// getters.spec.js
 test('displayItems return the first 20 items from state.items', () => {
   const items = Array(21).fill().map((v,i) => i)
   const state = { items }
@@ -117,45 +117,48 @@ describe('store', () => {
 })
 ```
 
-其实 `localVue` 和 `store` 的深拷贝都是为了防止全局 `Vue` 和 `state` 的污染
+其实 `localVue` 和 `store` 配置的深拷贝都是为了防止全局 `Vue` 和 `state` 的污染
 
 ## 测试 Vuex 组件
 
 ```js
 // ItemList.spec.js
-let storeConfig
-let store
+describe('ItemList.vue', () => {)
+  // ..
+  let storeConfig
+  let store
 
-// 前置钩子创建store
-beforeEach(() => {
-  storeConfig = {
-    getters: {
-      displayItems: jest.fn()
-    },
-    actions: {
-      fetchListData: jest.fn(() => Promise.resolve([]))
+  // 前置钩子创建store
+  beforeEach(() => {
+    storeConfig = {
+      getters: {
+        displayItems: jest.fn()
+      },
+      actions: {
+        fetchListData: jest.fn(() => Promise.resolve([]))
+      }
     }
-  }
-  store = new Vuex.Store(storeConfig)
-})
-
-test('renders Item with data in store.getters.displayItem', () => {
-  expect.assertions(4)
-  const $bar = {
-    start: () => {},
-    finish: () => {}
-  }
-  const items = [{id:1}, {id:2}, {id:3}]
-  storeConfig.getters.displayItems.mockReturnValue(items)
-  const wrapper = shallowMount(ItemList, {
-    mocks: { $bar },
-    localVue,  // 使用 localVue 构造函数挂载
-    store  // this.$store
+    store = new Vuex.Store(storeConfig)
   })
-  const Items = wrapper.findAllComponents(Item)
-  expect(Items).toHaveLength(items.length)
-  Items.wrappers.forEach((wrapper, i) => {
-    expect(wrapper.props().item).toBe(items[i])
+
+  test('renders Item with data in store.getters.displayItem', () => {
+    expect.assertions(4)
+    const $bar = {
+      start: () => {},
+      finish: () => {}
+    }
+    const items = [{id:1}, {id:2}, {id:3}]
+    storeConfig.getters.displayItems.mockReturnValue(items)
+    const wrapper = shallowMount(ItemList, {
+      mocks: { $bar },
+      localVue,  // 使用 localVue 构造函数挂载
+      store  // this.$store
+    })
+    const Items = wrapper.findAllComponents(Item)
+    expect(Items).toHaveLength(items.length)
+    Items.wrappers.forEach((wrapper, i) => {
+      expect(wrapper.props().item).toBe(items[i])
+    })
   })
 })
 ```
