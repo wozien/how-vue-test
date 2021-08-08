@@ -37,3 +37,5 @@ yarn add jest vue-jest babel-jest babel-core@bridge @vue/test-utils -D
 - [端到端测试](./docs/e2e.md)
 
 - [Vuex 测试](./docs/vuex.md)
+
+- [Router 测试](./docs/vue-router.md)
