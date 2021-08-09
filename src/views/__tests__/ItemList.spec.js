@@ -7,6 +7,7 @@ import mergeWith from 'lodash.mergewith'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+// localVue.mixin(titleMixin)
 
 describe('ItemList.vue', () => {
   function customizer(objValue, srcValue) {
@@ -182,5 +183,13 @@ describe('ItemList.vue', () => {
     const wrapper = createWrapper({ mocks, store })
     expect(wrapper.findComponent(RouterLinkStub).props().to).toBe('/top/2')
     expect(wrapper.findComponent(RouterLinkStub).text()).toBe('more >')
+  })
+
+  test('set document title with route.params.type', () => {
+    const mocks = {
+      $route: { params: { type: 'new' }}
+    }
+    createWrapper({ mocks })
+    expect(document.title).toBe('New')
   })
 })

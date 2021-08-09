@@ -28,11 +28,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Item from '../components/Item.vue'
+import titleMixin from '../utils/mixins'
 
 export default {
   components: {
     Item
   },
+  mixins: [titleMixin],
 
   computed: {
     type() {
@@ -43,6 +45,9 @@ export default {
     },
     maxPage() {
       return this.$store.getters.maxPage
+    },
+    title() {
+      return this.type.charAt(0).toUpperCase() + this.type.slice(1)
     },
     ...mapGetters(['displayItems'])
   },

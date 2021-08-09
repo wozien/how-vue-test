@@ -366,3 +366,57 @@ test('send post request with email on submit', () => {
 ```
 
 向单选框和复选框必须要用 `setChecked` 来设置值
+
+## 测试 Mixin
+
+### 测试 mixin 对象
+
+使用注册后的 `mixin` 来创建一个组件，挂在这个组件，然后断言输出即可。 比如：
+
+```js
+// title-mixin.js
+export default {
+  mounted() {
+    const title = this.title || this.$options.title
+    if(title) {
+      document.title = title
+    }
+  }
+}
+```
+
+```js
+// title-mixin.spec.js
+test('set document title using component title property', () => {
+  const component = {
+    render() {},
+    title: 'a title',
+    mixins: [titleMixin]
+  }
+  mount(component)
+  expect(document.title).toBe('a title')
+})
+```
+
+### 测试组件局部的mixin
+
+为组件编写的单元测试不用考虑 `mixin` 内部实现， 只需测试 `mixin` 的输出即可
+
+```js
+test('set document title with route.params.type', () => {
+  const mocks = {
+    $route: { params: { type: 'new' }}
+  }
+  createWrapper({ mocks })
+  expect(document.title).toBe('New')
+})
+```
+
+### 测试组件全局的mixin
+
+使用 `localVue.mixin` 来注册全局， 然后测试代码和局部一样
+
+```js
+const localVue = createLocalVue()
+localVue.mixin(titleMixin)
+```
