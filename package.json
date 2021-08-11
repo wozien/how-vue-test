@@ -16,6 +16,7 @@
     "firebase": "^8.7.1",
     "flush-promises": "^1.0.2",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.merge": "^4.6.2",
     "lodash.mergewith": "^4.6.2",
     "vue": "^2.6.11",
     "vue-router": "^3.5.2",
@@ -60,6 +61,7 @@
       "^.+\\.js$": "babel-jest",
       "^.+\\.vue$": "vue-jest"
     },
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFiles": ["./test-setup.js"]
   }
 }
