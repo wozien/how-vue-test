@@ -28,7 +28,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Item from '../components/Item.vue'
-import titleMixin from '../utils/mixins'
+import { titleMixin } from '../utils/mixins'
 
 export default {
   components: {
@@ -50,6 +50,10 @@ export default {
       return this.type.charAt(0).toUpperCase() + this.type.slice(1)
     },
     ...mapGetters(['displayItems'])
+  },
+
+  asyncData ({ store, route: { params: { type } } }) {
+    return store.dispatch('fetchListData', { type })
   },
   
   beforeMount() {

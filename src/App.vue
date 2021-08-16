@@ -10,14 +10,11 @@
       </nav>
     </header>
     <div class="view">
+      {{ $route.params.type }}
       <router-view :key="$route.params.type"></router-view>
-  </div>
+    </div>
   </div>
 </template>
-
-<script>
-
-</script>
 
 <style>
 body {
