@@ -1,5 +1,5 @@
 
-export default {
+export const titleMixin = {
   mounted() {
     const title = this.title || this.$options.title
     if(title) {

@@ -3,21 +3,13 @@ import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import ItemList from '../ItemList.vue'
 import flushPromises from 'flush-promises'
 import Item from '../../components/Item.vue'
-import mergeWith from 'lodash.mergewith'
+import merge from 'lodash.merge'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
 // localVue.mixin(titleMixin)
 
 describe('ItemList.vue', () => {
-  function customizer(objValue, srcValue) {
-    if(Array.isArray(srcValue)) {
-      return srcValue
-    }
-    if(srcValue instanceof Object && Object.keys(srcValue).length === 0) {
-      return srcValue
-    }
-  }
   
   function createStore(storeConfig) {
     const config = {
@@ -28,7 +20,7 @@ describe('ItemList.vue', () => {
         fetchListData: jest.fn(() => Promise.resolve())
       }
     }
-    return new Vuex.Store(mergeWith(config, storeConfig, customizer))
+    return new Vuex.Store(merge(config, storeConfig))
   }
   
   function createWrapper(mountConfig) {
@@ -49,7 +41,7 @@ describe('ItemList.vue', () => {
         RouterLink: RouterLinkStub
       }
     }
-    return shallowMount(ItemList, mergeWith(config, mountConfig, customizer))
+    return shallowMount(ItemList, merge(config, mountConfig))
   }
   
   test('renders Item with data in store.getters.displayItem', () => {

@@ -1,12 +1,11 @@
-import Firebase from 'firebase/app'
-import 'firebase/database'
+import { createAPI } from 'create-api'
 
-// 
-Firebase.initializeApp({
-  databaseURL: 'https://hacker-news.firebaseio.com'
+const api = createAPI({
+  version: '/v0',
+  config: {
+    databaseURL: 'https://hacker-news.firebaseio.com'
+  }
 })
-
-const api = Firebase.database().ref('/v0')
 
 function fetch (child) {
   const cache = api.cachedItems
@@ -26,8 +25,19 @@ function fetch (child) {
 }
 
 export function fetchListData (type) {
-  return fetchIdsByType(type)
-    .then((ids) => fetchItems(ids))
+  // return fetchIdsByType(type)
+  //   .then((ids) => fetchItems(ids))
+  return Promise.resolve([
+    {
+      by: 'aaa',
+      id: 1234,
+      score: 10,
+      time: (new Date('2021')/1000) - 600,
+      title: 'vue-test-utils',
+      type: 'story',
+      url: 'https://www.baidu.com'
+    }
+  ])
 }
 
 export function fetchIdsByType (type) {

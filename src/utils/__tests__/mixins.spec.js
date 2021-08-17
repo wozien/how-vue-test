@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals'
 import { mount } from '@vue/test-utils'
-import titleMixin from '../mixins'
+import { titleMixin } from '../mixins'
 
 describe('titleMixin', () => {
   test('set document title using component title property', () => {

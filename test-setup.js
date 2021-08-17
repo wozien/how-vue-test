@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import titleMixin from './src/utils/mixins'
+import { titleMixin } from './src/utils/mixins'
 import {
   timeAgo,
   host
