@@ -7,11 +7,12 @@
     "build": "npm run build:server -- --silent && npm run build:client -- --no-clean --silent",
     "build:client": "vue-cli-service build",
     "build:server": "cross-env WEBPACK_TARGET=node vue-cli-service build",
-    "start": "node server.js",
+    "start": "node scripts/start",
     "lint": "vue-cli-service lint",
     "test": "jest",
     "test:unit": "jest --no-cache",
-    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
+    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
+    "test:e2e": "node scripts/e2e_runner"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -34,10 +35,13 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.6",
+    "chromedriver": "^92.0.1",
     "cross-env": "^7.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^27.0.6",
+    "nightwatch": "^1.7.8",
+    "selenium-server": "^3.141.59",
     "vue-jest": "^3.0.7",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.11",

@@ -1,5 +1,5 @@
 /**
- * @jest-enviroment node
+ * @jest-environment node
  */
 import { renderToString, render } from '@vue/server-test-utils'
 import NotFound from '../NotFound.vue'
