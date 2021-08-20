@@ -1,14 +1,21 @@
 import Vuex from 'vuex'
+import Router from 'vue-router'
+import { sync } from 'vuex-router-sync'
 import { createLocalVue } from '@vue/test-utils'
-import storeConfig from '../index'
 import cloneDeep from 'lodash.clonedeep'
 import { fetchListData } from '../../api/api'
 import flushPromise from 'flush-promises'
+import storeConfig from '../index'
+import routerConfig from '../../router/index'
 
 jest.mock('../../api/api.js')
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(Router)
+const store = new Vuex.Store(storeConfig)
+const router = new Router(routerConfig)
+sync(store, router)
 
 describe('store', () => {
   test('dispatch fetchListData update displayItems', async () => {

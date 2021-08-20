@@ -21,7 +21,7 @@ export function createApp() {
   const router = new Router(routerConfig)
   const store = new Vuex.Store(storeConfig)
 
-  // sync(store, router)
+  sync(store, router)
 
   const app = new Vue({
     store,

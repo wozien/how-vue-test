@@ -25,19 +25,19 @@ function fetch (child) {
 }
 
 export function fetchListData (type) {
-  // return fetchIdsByType(type)
-  //   .then((ids) => fetchItems(ids))
-  return Promise.resolve([
-    {
-      by: 'aaa',
-      id: 1234,
-      score: 10,
-      time: (new Date('2021')/1000) - 600,
-      title: 'vue-test-utils',
-      type: 'story',
-      url: 'https://www.baidu.com'
-    }
-  ])
+  return fetchIdsByType(type)
+    .then((ids) => fetchItems(ids))
+  // return Promise.resolve([
+  //   {
+  //     by: 'aaa',
+  //     id: 1234,
+  //     score: 10,
+  //     time: (new Date('2021')/1000) - 600,
+  //     title: 'vue-test-utils',
+  //     type: 'story',
+  //     url: 'https://www.baidu.com'
+  //   }
+  // ])
 }
 
 export function fetchIdsByType (type) {

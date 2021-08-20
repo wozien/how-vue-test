@@ -1,4 +1,5 @@
 import ItemList from '../views/ItemList.vue'
+import ItemView from '../views/ItemView.vue'
 
 export default [
   {
@@ -8,5 +9,6 @@ export default [
   {
     path: '/',
     redirect: '/top'
-  }
+  },
+  { path: '/item/:id(\\d+)', component: ItemView },
 ]

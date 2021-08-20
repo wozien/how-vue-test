@@ -3,7 +3,7 @@ import getters from "../getters";
 describe('getters', () => {
   test('displayItems return the first 20 items from state.items', () => {
     const items = Array(21).fill().map((v,i) => i)
-    const state = { items }
+    const state = { items, route: { params: {} } }
     const displayItems = getters.displayItems(state)
     expect(displayItems).toEqual(items.slice(0, 20))
   })

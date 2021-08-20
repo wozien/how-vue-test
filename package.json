@@ -12,7 +12,8 @@
     "test": "jest",
     "test:unit": "jest --no-cache",
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
-    "test:e2e": "node scripts/e2e_runner"
+    "test:e2e": "nightwatch --config e2e/nightwatch.conf.js --env chrome",
+    "test:e2e:ssr": "node scripts/e2e_runner"
   },
   "dependencies": {
     "axios": "^0.21.1",
